@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 
 # Created by https://www.gitignore.io/api/django
-=======
 # Created by https://www.gitignore.io/api/vim,python,django,virtualenv
->>>>>>> d9bd8f2be9b75d7acf8777bbf30ca50b5f62d6f0
 
 ### Django ###
 *.log
@@ -13,12 +10,8 @@ __pycache__/
 local_settings.py
 db.sqlite3
 media
-<<<<<<< HEAD
-static/InCookData/
-nohup.out
 
 # End of https://www.gitignore.io/api/django
-=======
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
@@ -149,4 +142,3 @@ pip-selfcheck.json
 */config.py
 static/InCookData/
 nohup.out
->>>>>>> d9bd8f2be9b75d7acf8777bbf30ca50b5f62d6f0
