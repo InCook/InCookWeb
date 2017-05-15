@@ -1,5 +1,3 @@
-
-# Created by https://www.gitignore.io/api/django
 # Created by https://www.gitignore.io/api/vim,python,django,virtualenv
 
 ### Django ###
@@ -10,8 +8,6 @@ __pycache__/
 local_settings.py
 db.sqlite3
 media
-
-# End of https://www.gitignore.io/api/django
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
