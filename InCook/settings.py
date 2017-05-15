@@ -10,6 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
+<<<<<<< HEAD
+=======
+# config file
+from config import *
+
+>>>>>>> d9bd8f2be9b75d7acf8777bbf30ca50b5f62d6f0
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
@@ -20,7 +26,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+<<<<<<< HEAD
 SECRET_KEY = '#=v*^fe+2m)crgfmo$y=qtoc&ax*3-#jws7#ock--4mi)5v*2*'
+=======
+# config.py
+>>>>>>> d9bd8f2be9b75d7acf8777bbf30ca50b5f62d6f0
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -74,6 +84,7 @@ WSGI_APPLICATION = 'InCook.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
+<<<<<<< HEAD
 
 DATABASES = {
     'default': {
@@ -86,6 +97,9 @@ DATABASES = {
     }
 }
 
+=======
+# config.py
+>>>>>>> d9bd8f2be9b75d7acf8777bbf30ca50b5f62d6f0
 
 
 # Internationalization
