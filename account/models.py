@@ -1,11 +1,15 @@
 from django.db import models
+#from django_mysql.models import JSONField
 from django.contrib.auth.models import User
-from django.utils import timezone
+
+from recipe.models import Recipe 
 
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    activation_key = models.CharField(max_length=40, blank=True)
-    key_expires = models.DateTimeField(default=timezone.now)
+    likes = models.ManyToManyField(Recipe, related_name='account_likes')
+    bookmarks = models.ManyToManyField(Recipe, related_name='account_bookmarks')
+    ratings = models.ManyToManyField(Recipe, related_name='account_ratings')
+    #ratings_detail = JSONField() # { recipe_id : each score } -> MySQL 5.7+ is required
 
     def __str__(self):
         return self.user.first_name
