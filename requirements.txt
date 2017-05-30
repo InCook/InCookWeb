@@ -1,2 +1,4 @@
 Django==1.8
+django-mysql==2.0.0
 PyMySQL==0.7.11
+readline==6.2.4.1
