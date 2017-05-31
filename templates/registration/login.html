@@ -1,0 +1,30 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <title>login</title>
+  </head>
+  <body>
+    <!-- Sign In Form -->
+    <form id="signin" method="post" action="{% url 'login' %}" autocomplete="off">
+      {% csrf_token %} 
+
+      <!-- Username input-->
+      <div class="input-field">
+        <input id="id_username" maxlength="254" name="username" type="text" class="validate">
+        <label for="id_username">ID</label>
+      </div>
+
+      <!-- Password input-->
+      <div class="input-field">
+        <input id="id_password" name="password" type="password" class="validate">
+        <label for="id_password">Password</label>
+      </div>
+
+      <!-- Sign in Button -->
+      <div class="input-field">
+        <input type="hidden" name="next" value="/profile">
+        <button id="signin" name="signin" class="waves-effect waves-light btn-large" type="submit">Log In</button>
+      </div>
+    </form>
+  </body>
+</html>
