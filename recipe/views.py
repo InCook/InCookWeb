@@ -47,6 +47,7 @@ def get_recipe (request):
             response = json.dumps({'success': False, 'detail': "No matching author.", 'output': None})
             return HttpResponse(response, "application/json")
 
+
         # Check Account existence
         if Account.objects.filter(user = user).exists():
             account = Account.objects.get(user = user)
@@ -131,6 +132,8 @@ def add_like (request):
                 like_str = "add_like-num"
             else :
                 like_str = "delete_like-num"
+
+            # aa
 
         else:
             response = json.dumps({'success': False, 'detail': "No matching aacount.", 'output': None})
