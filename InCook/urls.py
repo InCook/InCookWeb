@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^login$', auth_views.login, {'template_name': 'registration/login.html'}, name='login'),
     url(r'^recipe/$', recipe_views.get_recipe,  name='get_recipe'),
     url(r'^like/$', recipe_views.add_like,  name='add_like'),
+    url(r'^bookmark/$', recipe_views.add_bookmark,  name='add_bookmark'),
 ]
