@@ -215,3 +215,7 @@ def add_bookmark (request):
         response = json.dumps({'success': False, 'detail': "No matching recipe.", 'output': None})
         return HttpResponse(response, "application/json")
     return HttpResponse(a, "application/json")
+
+@login_required(login_url='/login', redirect_field_name='')
+def search (request):
+    return HttpResponse("", "application/json")
