@@ -7,6 +7,7 @@ from django.utils import timezone
 from .choices import *
 
 class Ingredient(models.Model):
+    category = models.CharField(max_length=200, null=True)
     name = models.CharField(max_length=200)
 
     def __str__(self):
