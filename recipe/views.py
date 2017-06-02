@@ -122,7 +122,8 @@ def add_like (request):
             # like or not
             if Account.objects.filter(user__in = [user], likes__in = [recipe]).exists():
                 del_acc = Account.objects.filter(user__in = [user], likes__in = [recipe])
-                del_acc.delete()
+                del_acc[0].likes.remove(recipe)
+                #del_acc.delete()
                 like = False
             else:
                 account.likes.add(recipe)
@@ -191,9 +192,9 @@ def add_bookmark (request):
             #users_in_zones = User.objects.filter(zones__in=[ < id1 >, < id2 >, < id3 >])
 
             # like or not
-            if Account.objects.filter(user__in = [user], likes__in = [recipe]).exists():
-                del_acc = Account.objects.filter(user__in = [user], likes__in = [recipe])
-                del_acc.delete()
+            if Account.objects.filter(user__in = [user], bookmarks__in = [recipe]).exists():
+                del_acc = Account.objects.filter(user__in = [user], bookmarks__in = [recipe])
+                del_acc[0].bookmarks.remove(recipe)
                 bookmark = False
             else:
                 account.bookmarks.add(recipe)
@@ -204,6 +205,7 @@ def add_bookmark (request):
             account = Account(user = user)
             account.save()
             account.bookmarks.add(recipe)
+
 
         response = json.dumps({'success': True, 'detail': "Got recipe.", 'output': {"recipe_id" : recipe_id,
                              "bookmark" : bookmark}})
