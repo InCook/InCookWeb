@@ -1,38 +1,55 @@
 from django.shortcuts import render
 
 # Create your views here.
-
 @login_required(login_url='/login', redirect_field_name='')
-def recipe(request, recipe_id):
+def add(request):
 	if request.is_ajax():
+		form = RecipeForm()
+
+		if request.method="POST":
+			form = RecipeForm(request.POST)
+			if form.is_valid():
+				recipe = form.save()
+				recipe.author = request.user
+				recipe.created_date = timezone.now()
+				recipe.name = request.POST.get('name')
+				recipe.direction = request.POST.get('direction')
+				recipe.thumbnaili = request.POST.get('thumbnail')
+				recipe.url = request.POST.get('url')
+
+				recipe.ingredients = request.POST.get('ingredients')
+
+				recipe.health_labels = request.POST.get('health_labels')
+				recipe.diet_labels = request.POST.get('diet_labels')
+				recipe.cautions = request.POST.get('cautions')
+
+				recipe.save()
+				return HttpResponse('Success')
+	return HttpResponse('Fail')
+	
+@login_requried(login_url='/login', redirect_field_name='')
+def rating(request):
+	if request.is_ajax():
+		recipe_id = request.GET['recipe_id']
+		new_rate = request.GET['rate']
+		account = request.user
+	
+		# Check recipe id is int
+		if recipe_id.isdigit() is not True:
+			return HttpResponse('Fail');
+		
 		if Recipe.objects.filter(id=recipe_id).exists():
 			recipe = Recipe.objects.get(id=recipe_id)
-			account = Account.objects.get(id=request.user)
 
-			name = recipe.name
-			author = recipe.author
-			thumbnail = recipe.thumbnail
-			like_num = recipe.num_likes
-			rating = recipe.score
-			direction = recipe.direction
-
-			bookmark = False
-			if account.bookmarks.filter(id=recipe_id).exists():
-				bookmark = True
+			# Already User give rating
+			if Account.objects.filter(user__in=[account],ratings__in=[recipe]).exists():
+				
 			else:
-				bookmark = False
+				account.save()
+				account.ratings.add(recipe)
+				account.
 
-			like = False
-			if account.likes.filter(id=recipe_id).exists():
-				like = True
-			else:
-				like = False
-			
-			ingredients = []
-			for ing in recipe.ingredients.all():
-				ingredients.append(ing.name)
-
-			data = {'state':"Success", 'recipe_id':recipe_id, 'name':name, 'author':author, 'thumbnail':thumbnail, 'bookmark':bookmark, 'like':like, 'like_num':like_num, 'rating':rating, 'ingredients':ingredients, 'direction':direction}
-			return HttpResponse(json.dumps(data), content_type="application/json")
-	return HttpResponse(json.dumps({'state':"Fail"}), content_type="application/json")
-
+		else:
+			return HttpResponse('Fail')
+	return HttpResponse('Fail')
+	
