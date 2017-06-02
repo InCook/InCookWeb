@@ -1,6 +1,6 @@
 category = ["Dairy", "Meats", "Vegetables",
             "Fruits", "Spices", "Fish",
-            "Baking and v", "Oils", "Seafood",
+            "Baking and Grains", "Oils", "Seafood",
             "Nuts", "Desserts", "Beverages",
             "Soup", "Sauces", "Alcohol"]
 
