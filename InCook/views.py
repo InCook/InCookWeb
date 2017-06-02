@@ -15,4 +15,4 @@ def main (request):
         if i.category in category:
             ingre_list[category.index(i.category)].append(i.name)
 
-    return render(request, 'main.html', {})
+    return render(request, 'main.html', {'ingredient_list' : ingre_list})
