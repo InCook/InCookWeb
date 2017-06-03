@@ -12,6 +12,7 @@ from functools import reduce
 import operator
 
 from .models import *
+from .forms import RecipeForm
 from account.models import *
 from django.contrib.auth.models import User
 
@@ -20,7 +21,7 @@ from django.contrib.auth.models import User
 def add_recipe(request):
 	form = RecipeForm()
 
-	if request.method="POST":
+	if request.method == "POST":
 		form = RecipeForm(request.POST)
 		if form.is_valid():
 			recipe = form.save()
@@ -31,39 +32,52 @@ def add_recipe(request):
 			recipe.thumbnaili = request.POST.get('thumbnail')
 			recipe.url = request.POST.get('url')
 
-			recipe.ingredients = request.POST.get('ingredients')
+			i = request.POST.get('ingredients')
+			ingredients = i.split(',')
+			for ing in ingredients:
+				if Ingredient.objects.filter(name=ing).exists():
+					recipe.ingredients.add(Ingredient.objects.get(name=ing))
 
+			recipe.calories = request.POST.get('calories')
+#			health = []
+#			health.append(request.POST.get('health_labels'))
+#			recipe.health_labels = health
 			recipe.health_labels = request.POST.get('health_labels')
 			recipe.diet_labels = request.POST.get('diet_labels')
 			recipe.cautions = request.POST.get('cautions')
 
+			recipe.score = 0.0
+
 			recipe.save()
 		
-			return HttpResponse("Success")
-	return HttpResponse("Fail")
+			return render(request, 'add.html')
+		else:
+			return HttpResponse("invalid") # invali d?????????????????????????
+	return render(request,'add.html')
 	
 @login_required(login_url='/login', redirect_field_name='')
 def add_rating(request):
 	recipe_id = request.GET['recipe_id']
-	new_rate = request.GET['rate']
-	account = request.user
-	
+	new_rate = int(request.GET['rate'])
+
 	# Check recipe id is int
 	if recipe_id.isdigit() is not True:
 		return HttpResponse("Fail");
-		
+	
 	if Recipe.objects.filter(id=recipe_id).exists():
 		recipe = Recipe.objects.get(id=recipe_id)
 
 		# Already User give rating
-		if Account.objects.filter(user__in=[account],ratings__in=[recipe]).exists():
-				
-		else:
+		if Account.objects.filter(user = request.user, ratings = recipe).exists(): # pairrrrR?????????????
+			account = Account.objects.get(user = request_user, ratings = recipe)
 			account.save()
-			account.ratings.create(recipe)
+		else:
+			account = Account(user = request.user)
 
-	else:
-		return HttpResponse("Fail")
+		# avg rate => score? or calculation?
+		rating = 1.0
+		
+		return HttpResponse(str(rating))
 	return HttpResponse("Fail")
 	
 @login_required(login_url='/login', redirect_field_name='')

@@ -1,8 +1,21 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>TEST</title>
-  </head>
-  <body>
-  </body>
+<head>
+<title>1</title>
+</head>
+<body>
+	<form method="POST">
+		{% csrf_token %}
+		name<input type="text" name="name" /><br />
+		direction<textarea name="direction"></textarea><br />
+		thumbnail<input type="text" name="thumbnail" /><br />
+		url<input type="text" name="url" /><br />
+		ingredients<input type="text" name="ingredients" /><br />
+		calories<input type="text" name="calories" /><br />
+		health_labels<input type="text" name="health_labels" /><br />
+		diet_labels<input type="text" name="diet_labels" /><br />
+		cautions<input type="text" name="cautions" /><br />
+		<button type="submit">확인</button>
+	</form>
+</body>
 </html>
