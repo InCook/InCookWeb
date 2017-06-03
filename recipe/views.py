@@ -24,36 +24,34 @@ def add_recipe(request):
 	if request.method == "POST":
 		form = RecipeForm(request.POST)
 		if form.is_valid():
-			recipe = form.save()
+			recipe = form.save(commit=False)
 			recipe.author = request.user
 			recipe.created_date = timezone.now()
-			recipe.name = request.POST.get('name')
-			recipe.direction = request.POST.get('direction')
-			recipe.thumbnaili = request.POST.get('thumbnail')
-			recipe.url = request.POST.get('url')
 
-			i = request.POST.get('ingredients')
-			ingredients = i.split(',')
+			ingredients = str(request.POST.get('ing_names')).split(',')
+			recipe.save()
 			for ing in ingredients:
 				if Ingredient.objects.filter(name=ing).exists():
-					recipe.ingredients.add(Ingredient.objects.get(name=ing))
+					ingredient = Ingredient.objects.get(name=ing)
+					recipe.ingredients.add(ingredient)
+				else:
+					new_ing = Ingredient(name=ing, category="")
+					new_ing.save()
+					recipe.ingredients.add(new_ing)
 
-			recipe.calories = request.POST.get('calories')
-#			health = []
-#			health.append(request.POST.get('health_labels'))
-#			recipe.health_labels = health
-			recipe.health_labels = request.POST.get('health_labels')
-			recipe.diet_labels = request.POST.get('diet_labels')
-			recipe.cautions = request.POST.get('cautions')
+			recipe.health_labels = str(request.POST.get('hl')).split(',')
+			recipe.diet_labels = str(request.POST.get('dl')).split(',')
+			recipe.cautions = str(request.POST.get('c'))
 
+			recipe.no_likes = 0
 			recipe.score = 0.0
 
 			recipe.save()
 		
-			return render(request, 'add.html')
+			return render(request, 'add.html', {})
 		else:
 			return HttpResponse("invalid") # invali d?????????????????????????
-	return render(request,'add.html')
+	return render(request,'add.html', {})
 	
 @login_required(login_url='/login', redirect_field_name='')
 def add_rating(request):
