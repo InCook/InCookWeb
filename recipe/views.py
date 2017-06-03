@@ -8,8 +8,11 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from operator import attrgetter
+from functools import reduce
+import operator
 
 from .models import *
+from .forms import RecipeForm
 from account.models import *
 from django.contrib.auth.models import User
 
@@ -18,7 +21,7 @@ from django.contrib.auth.models import User
 def add_recipe(request):
 	form = RecipeForm()
 
-	if request.method="POST":
+	if request.method == "POST":
 		form = RecipeForm(request.POST)
 		if form.is_valid():
 			recipe = form.save()
@@ -29,39 +32,52 @@ def add_recipe(request):
 			recipe.thumbnaili = request.POST.get('thumbnail')
 			recipe.url = request.POST.get('url')
 
-			recipe.ingredients = request.POST.get('ingredients')
+			i = request.POST.get('ingredients')
+			ingredients = i.split(',')
+			for ing in ingredients:
+				if Ingredient.objects.filter(name=ing).exists():
+					recipe.ingredients.add(Ingredient.objects.get(name=ing))
 
+			recipe.calories = request.POST.get('calories')
+#			health = []
+#			health.append(request.POST.get('health_labels'))
+#			recipe.health_labels = health
 			recipe.health_labels = request.POST.get('health_labels')
 			recipe.diet_labels = request.POST.get('diet_labels')
 			recipe.cautions = request.POST.get('cautions')
 
+			recipe.score = 0.0
+
 			recipe.save()
 		
-			return HttpResponse("Success")
-	return HttpResponse("Fail")
+			return render(request, 'add.html')
+		else:
+			return HttpResponse("invalid") # invali d?????????????????????????
+	return render(request,'add.html')
 	
 @login_required(login_url='/login', redirect_field_name='')
 def add_rating(request):
 	recipe_id = request.GET['recipe_id']
-	new_rate = request.GET['rate']
-	account = request.user
-	
+	new_rate = int(request.GET['rate'])
+
 	# Check recipe id is int
 	if recipe_id.isdigit() is not True:
 		return HttpResponse("Fail");
-		
+	
 	if Recipe.objects.filter(id=recipe_id).exists():
 		recipe = Recipe.objects.get(id=recipe_id)
 
 		# Already User give rating
-		if Account.objects.filter(user__in=[account],ratings__in=[recipe]).exists():
-				
-		else:
+		if Account.objects.filter(user = request.user, ratings = recipe).exists(): # pairrrrR?????????????
+			account = Account.objects.get(user = request_user, ratings = recipe)
 			account.save()
-			account.ratings.create(recipe)
+		else:
+			account = Account(user = request.user)
 
-	else:
-		return HttpResponse("Fail")
+		# avg rate => score? or calculation?
+		rating = 1.0
+		
+		return HttpResponse(str(rating))
 	return HttpResponse("Fail")
 	
 @login_required(login_url='/login', redirect_field_name='')
@@ -98,19 +114,18 @@ def get_recipe (request):
 
         # Check Account existence
         if Account.objects.filter(user = user).exists():
-            account = Account.objects.get(user = user)
 
             # bookmark or not
-            if account.bookmarks.count() == 0:
-                bookmark = False
-            else:
+            if Account.objects.filter(user__in = [user], bookmarks__in = [recipe]).exists():
                 bookmark = True
+            else:
+                bookmark = False
 
             # like or not
-            if account.likes.count() == 0:
-                like = False
-            else:
+            if Account.objects.filter(user__in = [user], likes__in = [recipe]).exists():
                 like = True
+            else:
+                like = False
 
         else:
             bookmark = False
@@ -264,3 +279,93 @@ def add_bookmark (request):
         response = json.dumps({'success': False, 'detail': "No matching recipe.", 'output': None})
         return HttpResponse(response, "application/json")
     return HttpResponse(a, "application/json")
+  
+@login_required(login_url='/login', redirect_field_name='')
+def search (request):
+    # Get ingredients
+    ingre_list = request.GET['ingredients']
+    if ingre_list == "":
+        response = json.dumps({'success': False, 'detail': "No matching ingredients.", 'output': None})
+        return HttpResponse(response, "application/json")
+    ingre_list = ingre_list.replace("\"", "")
+    ingre_list = ingre_list.split(",")
+
+    # Get username
+    if request.GET['username'] != "":
+        username = request.GET['username']
+        username = username.replace("\"", "")
+    else:
+        username = None
+
+    # Make query list in order to operate or opearation with respect to ingredients
+    query_list = []
+    for i in ingre_list:
+        query_list.append(Q(name__contains = i))
+
+    # Get all ingredients records
+    ingredients = Ingredient.objects.filter(reduce(operator.or_, query_list))
+    #ingredients = Ingredient.objects.filter(reduce(operator.and_, query_list))
+
+    # Get recipe which contains ingredients
+    rec = Recipe.objects.filter(ingredients = ingredients).distinct()
+
+    output = []
+    for i in rec:
+        bookmark = False
+        like = False
+
+        # Check Account existence
+        if username != "" and User.objects.filter(username=username).exists():
+            user = User.objects.get(username)
+
+            if Account.objects.filter(user=user).exists():
+
+                # bookmark or not
+                if Account.objects.filter(user__in=[user], bookmarks__in=[i]).exists():
+                    bookmark = True
+                else:
+                    bookmark = False
+
+                # like or not
+                if Account.objects.filter(user__in=[user], likes__in=[i]).exists():
+                    like = True
+                else:
+                    like = False
+            else:
+                bookmark = False
+                like = False
+
+        else:
+            bookmark = False
+            like = False
+
+        # Count like_num and rating
+        like_num = Account.objects.filter(likes=i).count()
+        rating = Account.objects.filter(ratings=i).count()
+        author = str(i.author)
+        name = i.name
+        thumbnail = i.thumbnail
+
+        # Store output element
+        output_elem = {}
+        output_elem['author'] = author
+        output_elem['name'] = name
+        output_elem['thumbnail'] = thumbnail
+        output_elem['like'] = like
+        output_elem['bookmark'] = bookmark
+        output_elem['like_num'] = like_num
+        #output_elem['rating'] = rating
+
+        ingre = []
+        for j in i.ingredients.all():
+            ingre_elem = {}
+            ingre_elem['ingredient'] = j.name
+            ingre.append(ingre_elem)
+
+        output_elem['ingredients'] = ingre
+
+        output.append(output_elem)
+
+    response = json.dumps({'success': True, 'detail': "Got recipe.", 'output': output})
+    return HttpResponse(response, "application/json")
+
