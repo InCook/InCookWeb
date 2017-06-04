@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'^add/$', recipe_views.add_recipe, name='add_recipe'),
     url(r'^rating/$', recipe_views.add_rating,  name='add_rating'),
     url(r'^search/$', recipe_views.search,  name='search'),
+    url(r'^test/$', recipe_views.test,  name='test'),
 ]

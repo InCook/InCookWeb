@@ -16,6 +16,11 @@ from .forms import RecipeForm
 from account.models import *
 from django.contrib.auth.models import User
 
+def test(request):
+    account = Account.objects.get(user=request.user)
+    recipes = Recipe.objects.all()
+    return render(request, 'base.html', {'title':'InCook', 'recipes': recipes, 'account':account})
+
 # Create your views here.
 @login_required(login_url='/login', redirect_field_name='')
 def add_recipe(request):
