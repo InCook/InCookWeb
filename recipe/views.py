@@ -69,7 +69,7 @@ def add_rating(request):
 
 	# Check recipe id is int
 	if recipe_id.isdigit() is not True:
-		return HttpResponse("Recipe is not digit");
+		return HttpResponse("Fail");
 	
 	if Recipe.objects.filter(id=recipe_id).exists():
 		recipe = Recipe.objects.get(id=recipe_id)
@@ -89,8 +89,8 @@ def add_rating(request):
 			else:
 				rating = 0.0
 		
-			return HttpResponse(str(rating))
-	return HttpResponse("Recipe doesn't exist")
+			return HttpResponse(rating)
+	return HttpResponse("Fail")
 	
 @login_required(login_url='/login', redirect_field_name='')
 def get_recipe (request):
@@ -160,138 +160,52 @@ def get_recipe (request):
 
 @login_required(login_url='/login', redirect_field_name='')
 def add_like (request):
-    recipe_id = request.GET['recipe_id']
+	recipe_id = request.GET['recipe_id']
 
-    # Check recipe_id int
-    if recipe_id.isdigit() is not True:
-        response = json.dumps({'success': False, 'detail': "No matching type.", 'output': None})
-        return HttpResponse(response, "application/json")
+	if recipe_id.isdigit() is not True:
+		return HttpResponse("Fail")
+	
+	if Recipe.objects.filter(id=recipe_id).exists():
+		recipe = Recipe.objects.get(id=recipe_id)
+		if Account.objects.filter(user=request.user).exists():
+			account = Account.objects.get(user=request.user)
+			if Account.objects.filter(user__in=[request.user],likes__in=[recipe]).exists():
+				account.likes.remove(recipe)
+				account.save()
+				recipe.no_likes = recipe.no_likes - 1
+				recipe.save()
+				return HttpResponse("delete_"+str(recipe.no_likes))
+			else:
+				account.likes.add(recipe)
+				account.save()
+				recipe.no_likes = recipe.no_likes + 1
+				recipe.save()
+				return HttpResponse("add_"+str(recipe.no_likes))
 
-    like_str = ""
-    like_num = 0
-    like = False
-
-    # Check recipe existence
-    if Recipe.objects.filter(id=recipe_id).exists():
-
-        # Get attributes
-        recipe = Recipe.objects.get(id=recipe_id)
-        author = str(recipe.author)
-
-        # Check user existence
-        if User.objects.filter(username=author).exists():
-            user = User.objects.get(username=author)
-        else:
-            response = json.dumps({'success': False, 'detail': "No matching author.", 'output': None})
-            return HttpResponse(response, "application/json")
-
-        # Check Account existence
-        if Account.objects.filter(user = user).exists():
-            account = Account.objects.get(user = user)
-
-            # Example
-            # same thing but using in
-            #users_in_1zone = User.objects.filter(zones__in=[ < id1 >])
-            # filtering on a few zones, by id
-            #users_in_zones = User.objects.filter(zones__in=[ < id1 >, < id2 >, < id3 >])
-
-            # like or not
-            if Account.objects.filter(user__in = [user], likes__in = [recipe]).exists():
-                del_acc = Account.objects.filter(user__in = [user], likes__in = [recipe])
-                del_acc[0].likes.remove(recipe)
-                #del_acc.delete()
-                like = False
-            else:
-                account.likes.add(recipe)
-                like = True
-
-            # Count like_num and rating
-            like_num = account.likes.count()
-
-            if like == True:
-                like_str = "add_like-num"
-            else :
-                like_str = "delete_like-num"
-
-        else:
-            like = True
-            account = Account(user = user)
-            account.save()
-            account.likes.add(recipe)
-            like_str = "add_like-num"
-            like_num = account.likes.count()
-
-        response = json.dumps({'success': True, 'detail': "Got recipe.", 'output': {"recipe_id" : recipe_id,
-                             "author" : author, like_str : like_num, "like" : like}})
-        return HttpResponse(response, "application/json")
-
-    else:
-        response = json.dumps({'success': False, 'detail': "No matching recipe.", 'output': None})
-        return HttpResponse(response, "application/json")
-    return HttpResponse(a, "application/json")
+	return HttpResponse("Fail")
 
 @login_required(login_url='/login', redirect_field_name='')
 def add_bookmark (request):
-    recipe_id = request.GET['recipe_id']
+	recipe_id = request.GET['recipe_id']
 
-    # Check recipe_id int
-    if recipe_id.isdigit() is not True:
-        response = json.dumps({'success': False, 'detail': "No matching type.", 'output': None})
-        return HttpResponse(response, "application/json")
+	if recipe_id.isdigit() is not True:
+		return HttpResponse("Fail")
+	
+	if Recipe.objects.filter(id=recipe_id).exists():
+		recipe = Recipe.objects.get(id=recipe_id)
+		if Account.objects.filter(user=request.user).exists():
+			account = Account.objects.get(user=request.user)
+			if Account.objects.filter(user__in=[request.user],bookmarks__in=[recipe]).exists():
+				account.bookmarks.remove(recipe)
+				account.save()
+				return HttpResponse("delete")
+			else:
+				account.bookmarks.add(recipe)
+				account.save()
+				return HttpResponse("add")
 
-    like_str = ""
-    like_num = 0
-    like = False
+	return HttpResponse("Fail")
 
-    # Check recipe existence
-    if Recipe.objects.filter(id=recipe_id).exists():
-
-        # Get attributes
-        recipe = Recipe.objects.get(id=recipe_id)
-        author = str(recipe.author)
-
-        # Check user existence
-        if User.objects.filter(username=author).exists():
-            user = User.objects.get(username=author)
-        else:
-            response = json.dumps({'success': False, 'detail': "No matching author.", 'output': None})
-            return HttpResponse(response, "application/json")
-
-        # Check Account existence
-        if Account.objects.filter(user = user).exists():
-            account = Account.objects.get(user = user)
-
-            # Example
-            # same thing but using in
-            #users_in_1zone = User.objects.filter(zones__in=[ < id1 >])
-            # filtering on a few zones, by id
-            #users_in_zones = User.objects.filter(zones__in=[ < id1 >, < id2 >, < id3 >])
-
-            # like or not
-            if Account.objects.filter(user__in = [user], bookmarks__in = [recipe]).exists():
-                del_acc = Account.objects.filter(user__in = [user], bookmarks__in = [recipe])
-                del_acc[0].bookmarks.remove(recipe)
-                bookmark = False
-            else:
-                account.bookmarks.add(recipe)
-                bookmark = True
-
-        else:
-            bookmark = True
-            account = Account(user = user)
-            account.save()
-            account.bookmarks.add(recipe)
-
-
-        response = json.dumps({'success': True, 'detail': "Got recipe.", 'output': {"recipe_id" : recipe_id,
-                             "bookmark" : bookmark}})
-        return HttpResponse(response, "application/json")
-
-    else:
-        response = json.dumps({'success': False, 'detail': "No matching recipe.", 'output': None})
-        return HttpResponse(response, "application/json")
-    return HttpResponse(a, "application/json")
-  
 @login_required(login_url='/login', redirect_field_name='')
 def search (request):
     # Get ingredients
