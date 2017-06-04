@@ -39,9 +39,18 @@ def add_recipe(request):
 					new_ing.save()
 					recipe.ingredients.add(new_ing)
 
-			recipe.health_labels = str(request.POST.get('hl')).split(',')
-			recipe.diet_labels = str(request.POST.get('dl')).split(',')
-			recipe.cautions = str(request.POST.get('c'))
+			if not form.cleaned_data['hl']:
+				recipe.health_labels = []
+			else:
+				recipe.health_labels = str(request.POST.get('hl')).split(',')
+			if not form.cleaned_data['dl']:
+				recipe.diet_labels = []
+			else:
+				recipe.diet_labels = str(request.POST.get('dl')).split(',')
+			if not form.cleaned_data['c']:
+				recipe.cautions = []
+			else:
+				recipe.cautions = str(request.POST.get('c'))
 
 			recipe.no_likes = 0
 			recipe.score = 0.0
@@ -50,33 +59,38 @@ def add_recipe(request):
 		
 			return render(request, 'add.html', {})
 		else:
-			return HttpResponse("invalid") # invali d?????????????????????????
+			return HttpResponse("invalid") 
 	return render(request,'add.html', {})
 	
 @login_required(login_url='/login', redirect_field_name='')
 def add_rating(request):
 	recipe_id = request.GET['recipe_id']
-	new_rate = int(request.GET['rate'])
+	new_rate = float(request.GET['rate'])
 
 	# Check recipe id is int
 	if recipe_id.isdigit() is not True:
-		return HttpResponse("Fail");
+		return HttpResponse("Recipe is not digit");
 	
 	if Recipe.objects.filter(id=recipe_id).exists():
 		recipe = Recipe.objects.get(id=recipe_id)
-
-		# Already User give rating
-		if Account.objects.filter(user = request.user, ratings = recipe).exists(): # pairrrrR?????????????
-			account = Account.objects.get(user = request_user, ratings = recipe)
-			account.save()
-		else:
-			account = Account(user = request.user)
-
-		# avg rate => score? or calculation?
-		rating = 1.0
+		if Account.objects.filter(user=request.user).exists():
+			account = Account.objects.get(user=request.user)
+			if Account.objects.filter(user__in=[request.user],ratings__in=[recipe]):
+				account = Account.objects.get(user=request.user)
+			else:
+				account.ratings.add(recipe)
+				account.save()
+				recipe.score = recipe.score+new_rate
+				recipe.participants = recipe.participants+1
+				recipe.save()
+			# avg rate
+			if recipe.participants != 0:
+				rating = recipe.score / recipe.participants
+			else:
+				rating = 0.0
 		
-		return HttpResponse(str(rating))
-	return HttpResponse("Fail")
+			return HttpResponse(str(rating))
+	return HttpResponse("Recipe doesn't exist")
 	
 @login_required(login_url='/login', redirect_field_name='')
 def get_recipe (request):

@@ -10,7 +10,7 @@ def main (request):
                 "Nuts", "Desserts", "Beverages",
                 "Soup", "Sauces", "Alcohol"]
     ingre_list = [[] for j in range(15)]
-    ingre = Ingredient.objects.all()
+    ingre = Ingredient.objects.all().order_by('-category')
     for i in ingre:
         if i.category in category:
             ingre_list[category.index(i.category)].append(i.name)
