@@ -215,7 +215,7 @@ def add_like (request):
             like_num = account.likes.count()
 
         response = json.dumps({'success': True, 'detail': "Got recipe.", 'output': {"recipe_id" : recipe_id,
-                             "author" : author, "num" : like_num, "like" : like}})
+                             "author" : author, "like_num" : like_num, "like" : like}})
         return HttpResponse(response, "application/json")
 
     else:
