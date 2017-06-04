@@ -153,7 +153,6 @@ def add_like (request):
         response = json.dumps({'success': False, 'detail': "No matching type.", 'output': None})
         return HttpResponse(response, "application/json")
 
-    like_str = ""
     like_num = 0
     like = False
 
@@ -194,21 +193,15 @@ def add_like (request):
             # Count like_num and rating
             like_num = account.likes.count()
 
-            if like == True:
-                like_str = "add_like-num"
-            else :
-                like_str = "delete_like-num"
-
         else:
             like = True
             account = Account(user = user)
             account.save()
             account.likes.add(recipe)
-            like_str = "add_like-num"
             like_num = account.likes.count()
 
         response = json.dumps({'success': True, 'detail': "Got recipe.", 'output': {"recipe_id" : recipe_id,
-                             "author" : author, like_str : like_num, "like" : like}})
+                             "author" : author, "num" : like_num, "like" : like}})
         return HttpResponse(response, "application/json")
 
     else:
@@ -225,7 +218,6 @@ def add_bookmark (request):
         response = json.dumps({'success': False, 'detail': "No matching type.", 'output': None})
         return HttpResponse(response, "application/json")
 
-    like_str = ""
     like_num = 0
     like = False
 
