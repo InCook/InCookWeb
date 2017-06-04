@@ -39,7 +39,8 @@ class Recipe(models.Model):
         choices=DIET_LABELS, null=True, blank=True
     )
     no_likes = models.PositiveSmallIntegerField(default=0, null=True)
-    score = models.FloatField(default=0, null=True) # average of ratings
+    score = models.FloatField(default=0, null=True) # total score
+    participants = models.PositiveSmallIntegerField(default=0, null=True)
 
     def __str__(self):
         return self.name
