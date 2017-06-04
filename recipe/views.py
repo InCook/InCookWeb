@@ -16,6 +16,11 @@ from .forms import RecipeForm
 from account.models import *
 from django.contrib.auth.models import User
 
+def test(request):
+    account = Account.objects.get(user=request.user)
+    recipes = Recipe.objects.all()
+    return render(request, 'base.html', {'title':'InCook', 'recipes': recipes, 'account':account})
+
 # Create your views here.
 @login_required(login_url='/login', redirect_field_name='')
 def add_recipe(request):
@@ -181,13 +186,12 @@ def add_like (request):
 				recipe.no_likes = recipe.no_likes + 1
 				recipe.save()
 				return HttpResponse("add_"+str(recipe.no_likes))
-
 	return HttpResponse("Fail")
 
 @login_required(login_url='/login', redirect_field_name='')
 def add_bookmark (request):
 	recipe_id = request.GET['recipe_id']
-
+  
 	if recipe_id.isdigit() is not True:
 		return HttpResponse("Fail")
 	
