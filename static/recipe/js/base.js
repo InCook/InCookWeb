@@ -48,10 +48,5 @@ $(document).delegate('.bookmark', "click", function(){
   });
 });
 
-// add
-$("#add").click(function(){
-    alert('asdf');
-});
-
 // side-nav
 $(".button-collapse").sideNav();

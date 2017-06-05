@@ -5,10 +5,21 @@ html {
 body {
     background-color: #FAFAFA;
 }
+.btn {
+    background-color: #607d8b; 
+}
+.btn:hover {
+    background-color: #90a4ae; 
+}
+.modal {
+    width: 70%;
+    max-width: 850px;
+}
 
 /* Title */
 .title {
     text-align: center;
+    font-weight: lighter;
 }
 .title-recipe {
     font-weight: bold;
