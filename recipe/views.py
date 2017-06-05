@@ -128,8 +128,8 @@ def get_recipe (request):
             ingredients.append(str(i))
 
         # Check user existence
-        if User.objects.filter(username=author).exists():
-            user = User.objects.get(username=author)
+        if User.objects.filter(username=request.user).exists():
+            user = User.objects.get(username=request.user)
         else:
             response = json.dumps({'success': False, 'detail': "No matching author.", 'output': None})
             return HttpResponse(response, "application/json")
@@ -154,8 +154,8 @@ def get_recipe (request):
             like = False
 
         # Count like_num and rating
-        like_num = Account.objects.filter(likes = recipe).count()
-        rating = Account.objects.filter(ratings = recipe).count()
+        like_num = recipe.no_likes
+        rating = recipe.score/recipe.participants
 
         response = json.dumps({'success': True, 'detail': "Got recipe.", 'output': {"recipe_id" : recipe_id,
                              "name" : name, "author" : author, "thumbnail" : thumbnail, "bookmark" : bookmark,
