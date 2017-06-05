@@ -27,25 +27,7 @@ body {
 }
 .card-author {
     color: #9e9e9e !important;
-}
-.card-action a {
-    font-weight: bold;
-}
-.card-action > a > i {
-    vertical-align: bottom;
-    font-size: 20px;
-    margin-right: 3px;
-}
-.like,
-.bookmark {
-    cursor: pointer;
-    color: #9e9e9e !important;
-}
-.like-red {
-    color: #EC5367 !important;
-}
-.bookmark-blue {
-    color: #3C91CF !important;
+    font-style: italic;
 }
 
 /* Card image */
@@ -60,6 +42,34 @@ body {
     height: 200px;
     width: auto;
     overflow: hidden;
+}
+
+/* Like, Rating, Bookmark */
+.like,
+.bookmark {
+    cursor: pointer;
+}
+.like,
+.rating,
+.bookmark {
+    color: #9e9e9e !important;
+    font-weight: bold;
+}
+.like > i,
+.rating > i,
+.bookmark > i {
+    vertical-align: bottom;
+    font-size: 20px;
+    margin-right: 3px;
+}
+.like-red {
+    color: #EC5367 !important;
+}
+.rating-yellow {
+    color: #ffab40 !important;
+}
+.bookmark-blue {
+    color: #3C91CF !important;
 }
 
 /* Floating button */
