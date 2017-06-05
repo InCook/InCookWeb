@@ -356,3 +356,28 @@ def search (request):
     response = json.dumps({'success': True, 'detail': "Got recipe.", 'output': output})
     return HttpResponse(response, "application/json")
 
+@login_required(login_url='/login', redirect_field_name='')
+def get_ingredients (request):
+    if request.is_ajax():
+        # input data
+        q = request.GET.get('term', '')
+
+        # results of each ingredient by input data
+        ingredients = Ingredient.objects.filter(name__startswith=q)
+
+        # limit 5 of results
+        ingredients = ingredients[:5]
+
+        # if there is no result
+        if ingredients == []:
+            data = 'fail'
+
+        else:
+            results = []
+            for ingredient in ingredients:
+                ingredient_json = {'id':ingredient.id, 'type':ingredient.category, 'label':ingredient.name, 'value':ingredient.name}
+                results.append(ingredient_json)
+                data = json.dumps(results)
+    else:
+        data = 'fail'
+    return HttpResponse(data, "application/json")
