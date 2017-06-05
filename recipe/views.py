@@ -250,11 +250,17 @@ def add_bookmark (request):
 def search (request):
     # Get ingredients
     ingre_list = request.GET['ingredients']
+    if request.GET['noingredients'] != None:
+        noingre_list = request.GET['noingredients']
     if ingre_list == "":
         response = json.dumps({'success': False, 'detail': "No matching ingredients.", 'output': None})
         return HttpResponse(response, "application/json")
     ingre_list = ingre_list.replace("\"", "")
     ingre_list = ingre_list.split(",")
+
+    if noingre_list != "":
+        noingre_list = noingre_list.replace("\"", "")
+        noingre_list = noingre_list.split(",")
 
     # Get username
     if request.GET['username'] != "":
@@ -268,12 +274,17 @@ def search (request):
     for i in ingre_list:
         query_list.append(Q(name__contains = i))
 
+    noquery_list = []
+    for i in noingre_list:
+        noquery_list.append(Q(ingredients__name__contains = i))
+
     # Get all ingredients records
-    ingredients = Ingredient.objects.filter(reduce(operator.or_, query_list))
+    ingredients = Ingredient.objects.filter(reduce(operator.or_, query_list)).exclude(name__contains = "butter")#reduce(operator.or_, noquery_list))
     #ingredients = Ingredient.objects.filter(reduce(operator.and_, query_list))
 
     # Get recipe which contains ingredients
     rec = Recipe.objects.filter(ingredients = ingredients).distinct()
+    rec = rec.exclude(reduce(operator.or_, noquery_list))
 
     output = []
     for i in rec:
@@ -282,7 +293,7 @@ def search (request):
 
         # Check Account existence
         if username != "" and User.objects.filter(username=username).exists():
-            user = User.objects.get(username)
+            user = User.objects.get(username = username)
 
             if Account.objects.filter(user=user).exists():
 
