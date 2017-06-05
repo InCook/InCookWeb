@@ -155,7 +155,10 @@ def get_recipe (request):
 
         # Count like_num and rating
         like_num = recipe.no_likes
-        rating = recipe.score/recipe.participants
+        if recipe.participants == 0:
+            rating = 0
+        else:
+            rating = recipe.score/recipe.participants
 
         response = json.dumps({'success': True, 'detail': "Got recipe.", 'output': {"recipe_id" : recipe_id,
                              "name" : name, "author" : author, "thumbnail" : thumbnail, "bookmark" : bookmark,
