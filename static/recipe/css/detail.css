@@ -1,0 +1,38 @@
+#detail-name {
+    font-weight: bold;
+    text-align: center;
+    margin: 0px;
+}
+#detail-author {
+    text-align: center;
+    font-style: italic;
+    color: #9e9e9e;
+    margin-top: 5px;
+}
+#detail-thumbnail {
+    display: block;
+    margin: 0 auto 40px auto;
+}
+.modal-subtitle {
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1px solid #9e9e9e;
+    line-height: 0.1em;
+    margin: 20px;
+    margin-top: 50px;
+    font-size: 18px;
+}
+.modal-subtitle > span {
+    background: #fafafa;
+    padding:0 10px; 
+}
+.modal-subcontent {
+    margin: 20px;
+    line-height: 2em;
+    font-size: 1.1em;
+}
+.modal-footer > a.like,
+.modal-footer > a.rating,
+.modal-footer > a.bookmark {
+    float: left !important;
+}
