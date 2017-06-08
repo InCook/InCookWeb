@@ -3,145 +3,176 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- Font -->
+    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:thinitalic,lightitalic,bolditalic" rel="stylesheet">
+
     <!-- Google Icon Font -->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <!-- materialize -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+
     <!-- jQueryUI -->
     <link href="{% static 'jquery-ui/jquery-ui.min.css' %}" rel="stylesheet">
     <link href="{% static 'jquery-ui/jquery-ui.structure.min.css' %}" rel="stylesheet">
     <link href="{% static 'jquery-ui/jquery-ui.theme.min.css' %}" rel="stylesheet">
-    <!-- Font -->
-    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
-    <link href="https://fonts.googleapis.com/css?family=Josefin+Slab" rel="stylesheet">
+
+    <!-- Page Transition -->
+    <link href="{% static 'PageTransitions/css/animations.css' %}" rel="stylesheet">
+
     <!-- custom stylesheet -->
     <link href="{% static 'recipe/css/base.css' %}" rel="stylesheet">
+    <link href="{% static 'recipe/css/sidenav.css' %}" rel="stylesheet">
+    <link href="{% static 'recipe/css/recipe_list.css' %}" rel="stylesheet">
     <link href="{% static 'recipe/css/detail.css' %}" rel="stylesheet">
     <link href="{% static 'recipe/css/add.css' %}" rel="stylesheet">
 
     <title>{{ title }}</title>
   </head>
   <body>
-    <div class="container">
-      <div>
-        <h2 class="title">YOU CAN MAKE <span class="title-recipe"><span class="title-count">{{ recipes.count }}</span> RECIPES</span></h2>
-      </div>
 
-      <div class="row">
-        {% for recipe in recipes %}
-        <div class="col s6 m6 l4">
-          <div class="card">
-            <div id="{{ recipe.id }}"class="card-image">
-              <div class="card-image-hover card-image-hover-none">
-                <div class="valign-wrapper">
-                  <a class="center-align" href="#detail-modal">More detail</a>
-                </div>
-              </div>
-              {% with 'recipe/img/'|add:recipe.thumbnail as thumbnail_src %}
-              <img src="{% static thumbnail_src %}">
-              {% endwith %}
-            </div>
-            <div class="card-content">
-              <h4 class="card-title">{{ recipe.name }}</h4>
-              <p class="card-author">{{ recipe.author }}</p>
-            </div>
-            <div class="card-action">
+    <div id="pt-main">
 
-              {% if recipe in account.likes.all %}
-              <a id="like-{{ recipe.id }}" class="like like-red"><i class="material-icons">favorite</i>{{ recipe.no_likes }}</a>
-              {% else %}
-              <a id="like-{{ recipe.id }}" class="like"><i class="material-icons">favorite_border</i>{{ recipe.no_likes }}</a>
-              {% endif %}
+      <div class="pt-page pt-page-1">
+        <div id="hello" style="background-color:black;height:100vh;width:100vw;"></div>
 
-              <a id="rating-{{ recipe.id }}" class="rating rating-yellow"><i class="material-icons">grade</i>{{ recipe.score }}</a>
-
-              {% if recipe in account.bookmarks.all %}
-              <a id="bookmark-{{ recipe.id }}" class="bookmark bookmark-blue"><i class="material-icons">bookmark</i>SAVE</a>
-              {% else %}
-              <a id="bookmark-{{ recipe.id }}" class="bookmark"><i class="material-icons">bookmark_border</i>SAVE</a>
-              {% endif %}
-
-            </div>
+        <!-- Side Nav for Transition -->
+        <div id="sidenav" class="valign-wrapper right-align">
+          <div>
+            <p class="sidenav-text">Make 
+            <br><span id="sidenav-recipes">0</span>
+            <br><span>DISHES</span>
+            </p>
+            <a id="swap-btn" class="btn-floating btn-large waves-effect waves-light z-depth-0"><i class="material-icons">swap_horiz</i></a>
+            <p class="sidenav-text">with
+            <br><span id="sidenav-recipes">0</span>
+            <br><span>INGREDIENTS</span>
+            </p>
           </div>
         </div>
-        {% endfor %}
+
       </div>
 
-      <div id="add" class="fixed-action-btn">
-        <a class="btn-floating btn-large waves-effect waves-light red" href="#add-modal"><i class="material-icons">add</i></a>
+      <div class="pt-page pt-page-2">
+        <!-- Recipes -->
+        <div id="recipes">
+          <div class="grid">
+            {% for recipe in recipes %}
+            <div class="card grid-item">
+              <div id="{{ recipe.id }}" class="card-image">
+                <div class="card-image-hover card-image-hover-none">
+                  <div class="valign-wrapper">
+                    <a class="center-align" href="#detail-modal">More detail</a>
+                  </div>
+                </div>
+                {% with 'recipe/img/'|add:recipe.thumbnail as thumbnail_src %}
+                <img src="{% static thumbnail_src %}">
+                {% endwith %}
+              </div>
+              <div class="card-content">
+                <h4 class="card-title">{{ recipe.name }}</h4>
+                <p class="card-author">{{ recipe.author }}</p>
+              </div>
+              <div class="card-action">
+
+                {% if recipe in account.likes.all %}
+                <a id="like-{{ recipe.id }}" class="like like-red"><i class="material-icons">favorite</i>{{ recipe.no_likes }}</a>
+                {% else %}
+                <a id="like-{{ recipe.id }}" class="like"><i class="material-icons">favorite_border</i>{{ recipe.no_likes }}</a>
+                {% endif %}
+
+                <a id="rating-{{ recipe.id }}" class="rating rating-yellow"><i class="material-icons">grade</i>{{ recipe.score }}</a>
+
+                {% if recipe in account.bookmarks.all %}
+                <a id="bookmark-{{ recipe.id }}" class="bookmark bookmark-blue"><i class="material-icons">bookmark</i>SAVE</a>
+                {% else %}
+                <a id="bookmark-{{ recipe.id }}" class="bookmark"><i class="material-icons">bookmark_border</i>SAVE</a>
+                {% endif %}
+
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Add Button -->
+        <div id="add" class="fixed-action-btn">
+          <a class="btn-floating btn-large waves-effect waves-light red" href="#add-modal"><i class="material-icons">add</i></a>
+        </div>  
       </div>
 
-      <!-- Detail -->
-      <div id="detail-modal" class="modal modal-fixed-footer">
+    </div>
+
+    <!-- Add -->
+    <div id="add-modal" class="modal modal-fixed-footer">
+      <form action="#">
         <div class="modal-content">
-          <h4 id="detail-name">Modal Header</h4>
-          <p id="detail-author">A bunch of text</p>
-          <img id="detail-thumbnail" src="">
-          <div id="detail-ingredients">
-            <p class="modal-subtitle"><span>Ingredients</span></p>
-            <p class="modal-subcontent"></p>
+          <h4 id="add-name">Share your recipe!</h4>
+
+          <h6 class="add-title">Pictures</h6>
+          <p class="add-subtitle">Upload the images of your recipe.</p>
+          <div class="file-field input-field">
+            <div class="btn">
+              <span>File</span>
+              <input type="file" multiple>
+            </div>
+            <div class="file-path-wrapper">
+              <input class="file-path validate" type="text" placeholder="Upload one or more files">
+            </div>
           </div>
-          <div id="detail-direction">
-            <p class="modal-subtitle"><span>Direction</span></p>
-            <p class="modal-subcontent"></p>
+
+          <h6 class="add-title">Ingredients</h6>
+          <p class="add-subtitle">Search the ingredients it needs.</p>
+          <div class="row">
+            <div class="col s12">
+              <div id="add-ingredients" class="input-field ui-widget">
+                <input id="input-ingredients" type="search" name="ingredients" class="ui-autocomplete-input" autocomplete="off">
+                <label for="input-ingredients"><i class="material-icons">search</i></label>
+                <i class="material-icons close">close</i>
+              </div>
+            </div>
           </div>
+
+          <h6 class="add-title">Direction</h6>
+          <p class="add-subtitle">Describe your recipe in detail.</p>
+          <div class="row">
+            <div class="input-field col s12">
+              <textarea id="textarea1" class="materialize-textarea"></textarea>
+            </div>
+          </div>
+
         </div>
         <div class="modal-footer">
-          <a id="like-" class="modal-action btn-flat like"><i class="material-icons">favorite</i>2</a>
-          <a id="rating-" class="modal-action btn-flat rating"><i class="material-icons">grade</i>4.0</a>
-          <a id="bookmark-" class="modal-action btn-flat bookmark"><i class="material-icons">bookmark</i>SAVE</a>
-          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+          <button type="submit" name="action" class="modal-action modal-close waves-effect waves-green btn blue-grey">Submit
+            <i class="material-icons right">send</i>
+          </button>
+          <a href="#!" id="add-cancel" class="modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
+        </div>
+      </form> 
+    </div>
+
+    <!-- Detail -->
+    <div id="detail-modal" class="modal modal-fixed-footer">
+      <div class="modal-content">
+        <h4 id="detail-name">Modal Header</h4>
+        <p id="detail-author">A bunch of text</p>
+        <img id="detail-thumbnail" src="">
+        <div id="detail-ingredients">
+          <p class="modal-subtitle"><span>Ingredients</span></p>
+          <p class="modal-subcontent"></p>
+        </div>
+        <div id="detail-direction">
+          <p class="modal-subtitle"><span>Direction</span></p>
+          <p class="modal-subcontent"></p>
         </div>
       </div>
-
-      <!-- Add -->
-      <div id="add-modal" class="modal modal-fixed-footer">
-        <form action="#">
-          <div class="modal-content">
-            <h4 id="add-name">Share your recipe!</h4>
-
-            <h6 class="add-title">Pictures</h6>
-            <p class="add-subtitle">Upload the images of your recipe.</p>
-            <div class="file-field input-field">
-              <div class="btn">
-                <span>File</span>
-                <input type="file" multiple>
-              </div>
-              <div class="file-path-wrapper">
-                <input class="file-path validate" type="text" placeholder="Upload one or more files">
-              </div>
-            </div>
-
-            <h6 class="add-title">Ingredients</h6>
-            <p class="add-subtitle">Search the ingredients it needs.</p>
-            <div class="row">
-              <div class="col s12">
-                 <div id="add-ingredients" class="input-field ui-widget">
-                  <input id="input-ingredients" type="search" name="ingredients" class="ui-autocomplete-input" autocomplete="off">
-                  <label for="input-ingredients"><i class="material-icons">search</i></label>
-                  <i class="material-icons close">close</i>
-                </div>
-              </div>
-            </div>
-
-            <h6 class="add-title">Direction</h6>
-            <p class="add-subtitle">Describe your recipe in detail.</p>
-            <div class="row">
-              <div class="input-field col s12">
-                <textarea id="textarea1" class="materialize-textarea"></textarea>
-              </div>
-            </div>
-
-          </div>
-          <div class="modal-footer">
-            <button type="submit" name="action" class="modal-action modal-close waves-effect waves-green btn blue-grey">Submit
-              <i class="material-icons right">send</i>
-            </button>
-            <a href="#!" id="add-cancel" class="modal-action modal-close waves-effect waves-red btn-flat">Cancel</a>
-          </div>
-        </form> 
+      <div class="modal-footer">
+        <a id="like-" class="modal-action btn-flat like"><i class="material-icons">favorite</i>2</a>
+        <a id="rating-" class="modal-action btn-flat rating"><i class="material-icons">grade</i>4.0</a>
+        <a id="bookmark-" class="modal-action btn-flat bookmark"><i class="material-icons">bookmark</i>SAVE</a>
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
       </div>
-
     </div>
 
     <!-- jQuery -->
@@ -149,15 +180,24 @@
       src="https://code.jquery.com/jquery-3.2.1.min.js"
       integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
       crossorigin="anonymous"></script>
+
     <!-- materializecss -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+
     <!-- jQueryUI -->
     <script src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>
+
+    <!-- Masonry -->
+    <script src="{% static 'masonry/masonry.pkgd.min.js' %}"></script>
+
+    <!-- Page Transition -->
+    <script src="{% static 'PageTransitions/js/modernizr.custom.js' %}"></script>
+    <script src="{% static 'PageTransitions/js/pagetransitions.js' %}"></script>
+
     <!-- custom script -->
-    <script src="{% static 'recipe/js/base.js' %}"></script>
+    <script src="{% static 'recipe/js/recipe_list.js' %}"></script>
     <script src="{% static 'recipe/js/detail.js' %}"></script>
     <script src="{% static 'recipe/js/add.js' %}"></script>
-    {% block jsfiles %}
-    {% endblock %}
+
   </body>
 </html>

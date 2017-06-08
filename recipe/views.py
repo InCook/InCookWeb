@@ -22,7 +22,7 @@ def test(request):
     else:
         account = Account(user = request.user)
         account.save()
-    recipes = Recipe.objects.all()
+    recipes = Recipe.objects.all()[:10]
     return render(request, 'base.html', {'title':'InCook', 'recipes': recipes, 'account':account})
 
 # Create your views here.
