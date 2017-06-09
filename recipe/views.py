@@ -262,18 +262,13 @@ def search (request):
     ingre_list = request.GET.get('ingredients', None)
     noingre_list = request.GET.get('noingredients', None)
 
-    if ingre_list == None:
+    if ingre_list == None or ingre_list == '':
         response = json.dumps({'success': False, 'detail': "No matching ingredients.", 'output': None})
         return HttpResponse(response, "application/json")
-    ingre_list = ingre_list.replace("\"", "")
-    ingre_list = ingre_list.split(",")
+    ingre_list_split = ingre_list.split(",")
 
-    print(noingre_list)
-    print(ingre_list)
-
-    if noingre_list != None:
-        noingre_list = noingre_list.replace("\"", "")
-        noingre_list = noingre_list.split(",")
+    if noingre_list != None and noingre_list != '':
+        noingre_list_split = noingre_list.split(",")
 
     # Make query list in order to operate or opearation with respect to ingredients
     query_list = []
@@ -291,9 +286,12 @@ def search (request):
 
     # Get recipe which contains ingredients
     rec = Recipe.objects.filter(ingredients = ingredients).distinct()
-    if noingre_list != None:
+    if noingre_list != None and noingre_list != '':
         rec = rec.exclude(reduce(operator.or_, noquery_list))
 
+    account = Account.objects.get(user=request.user)
+
+    """
     output = []
     for i in rec:
         bookmark = False
@@ -346,6 +344,9 @@ def search (request):
 
     response = json.dumps({'success': True, 'detail': "Got recipe.", 'output': output})
     return HttpResponse(response, "application/json")
+    """
+
+    return render(request, 'recipe_list.html', {'recipes': rec, 'account':account})
 
 @login_required(login_url='/login', redirect_field_name='')
 def get_ingredients (request):

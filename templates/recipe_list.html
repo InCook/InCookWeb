@@ -1,0 +1,39 @@
+{% load staticfiles %}
+
+<div class="grid" data-cnt="{{ recipes.count }}">
+  {% for recipe in recipes %}
+  <div class="card grid-item">
+    <div id="{{ recipe.id }}" class="card-image">
+      <div class="card-image-hover card-image-hover-none">
+        <div class="valign-wrapper">
+          <a class="center-align" href="#detail-modal">More detail</a>
+        </div>
+      </div>
+      {% with 'recipe/img/'|add:recipe.thumbnail as thumbnail_src %}
+      <img src="{% static thumbnail_src %}">
+      {% endwith %}
+    </div>
+    <div class="card-content">
+      <h4 class="card-title">{{ recipe.name }}</h4>
+      <p class="card-author">{{ recipe.author }}</p>
+    </div>
+    <div class="card-action">
+
+      {% if recipe in account.likes.all %}
+      <a id="like-{{ recipe.id }}" class="like like-red"><i class="material-icons">favorite</i>{{ recipe.no_likes }}</a>
+      {% else %}
+      <a id="like-{{ recipe.id }}" class="like"><i class="material-icons">favorite_border</i>{{ recipe.no_likes }}</a>
+      {% endif %}
+
+      <a id="rating-{{ recipe.id }}" class="rating rating-yellow"><i class="material-icons">grade</i>{{ recipe.score }}</a>
+
+      {% if recipe in account.bookmarks.all %}
+      <a id="bookmark-{{ recipe.id }}" class="bookmark bookmark-blue"><i class="material-icons">bookmark</i>SAVE</a>
+      {% else %}
+      <a id="bookmark-{{ recipe.id }}" class="bookmark"><i class="material-icons">bookmark_border</i>SAVE</a>
+      {% endif %}
+
+    </div>
+  </div>
+  {% endfor %}
+</div>

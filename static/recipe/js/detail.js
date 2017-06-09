@@ -14,7 +14,8 @@ $(document).ready(function(){
 });
 
 // Modal
-$('.card-image').click(function() {
+// Recipe detail
+$(document).delegate('.card-image', "click", function(){
     var id = $(this).attr('id');
 
     $.get('/recipe', {'recipe_id': id}, function(data) {

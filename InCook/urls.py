@@ -13,7 +13,7 @@ urlpatterns = [
     #url(r'^$', incook_views.main,  name=''),
     url(r'^main$', recipe_views.test, name='main'),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^', auth_views.login, {'template_name': 'registration/login.html'}, name='login'),
+    url(r'^login/', auth_views.login, {'template_name': 'registration/login.html'}, name='login'),
 	url(r'^profile/$', account_views.profile, name='profile'),
     url(r'^recipe/$', recipe_views.get_recipe,  name='get_recipe'),
     url(r'^like/$', recipe_views.add_like,  name='add_like'),
