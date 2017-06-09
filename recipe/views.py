@@ -22,8 +22,15 @@ def test(request):
     else:
         account = Account(user = request.user)
         account.save()
-    recipes = Recipe.objects.all()
-    return render(request, 'base.html', {'title':'InCook', 'recipes': recipes, 'account':account})
+    recipes = Recipe.objects.all()[:10]
+    ingre_dict = {}
+    ingredients = Ingredient.objects.all()
+    for ingre in ingredients:
+        if ingre_dict.get(ingre.category):
+            ingre_dict[ingre.category].append({ingre.id:ingre.name})
+        else:
+            ingre_dict[ingre.category] = [{ingre.id:ingre.name}]
+    return render(request, 'base.html', {'title':'InCook', 'recipes': recipes, 'account':account, 'ingredients':ingre_dict})
 
 # Create your views here.
 @login_required(login_url='/login', redirect_field_name='')

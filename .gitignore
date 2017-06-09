@@ -143,3 +143,4 @@ pip-selfcheck.json
 */config.py
 static/InCookData/
 nohup.out
+*.DS_Store

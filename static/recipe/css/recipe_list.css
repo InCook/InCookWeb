@@ -1,0 +1,86 @@
+/* Recipes */
+#recipes {
+    position: relative;
+    left: 150px;
+    margin: 30px 200px 0px 50px;
+}
+
+/* Masonry Grid */
+.grid {
+    margin: 0 auto;
+}
+
+/* Card */
+.card {
+    text-align: center;
+    width: 300px;
+}
+.card-image {
+    cursor: pointer;
+}
+.card-title {
+    margin-top: 0px;
+    font-weight: bold;
+}
+.card-author {
+    color: #9e9e9e !important;
+    font-style: italic;
+}
+
+/* Card image */
+.card-image-hover-none {
+    display: none;
+}
+.card-image-hover {
+    background-color: rgba(0,0,0,0.3);
+}
+.card-image > img {
+    position: relative;
+    height: 200px;
+    width: auto;
+    overflow: hidden;
+}
+
+/* Like, Rating, Bookmark */
+.like,
+.bookmark {
+    cursor: pointer;
+}
+.like,
+.rating,
+.bookmark {
+    color: #9e9e9e !important;
+    font-weight: bold;
+}
+.like > i,
+.rating > i,
+.bookmark > i {
+    vertical-align: bottom;
+    font-size: 20px;
+    margin-right: 3px;
+}
+.like-red {
+    color: #EC5367 !important;
+}
+.rating-yellow {
+    color: #ffab40 !important;
+}
+.bookmark-blue {
+    color: #3C91CF !important;
+}
+
+/* Floating button */
+.fixed-action-btn {
+    bottom: 45px;
+    right:45px;
+}
+.btn-floating.btn-large {
+    width: 80px;
+    height: 80px;
+}
+.btn-floating.btn-large i {
+    line-height: 80px;
+}
+.btn-large i {
+    font-size: 64px;
+}
