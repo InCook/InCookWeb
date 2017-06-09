@@ -44,7 +44,7 @@
 
 	<!-- Logo -->
 	<div id="logo">
-	<img src="{% static 'img/logo-registration.jpg' %}" />
+	<p>InCook</p>
 	</div>
 
 	<!-- Error -->
@@ -70,13 +70,14 @@
 
 	<!-- Sign in Button -->
 	<div class="input-field">
-	<input type="hidden" name="next" value="/profile">
+	<input type="hidden" name="next" value="/main">
 	<button id="signin" name="signin" class="waves-effect waves-light btn-large" type="submit">Log In</button>
 	</div>
 
 	<!-- Sign up and forget? -->
 	<div>
 	<p>
+	 <a class="signup-forget" href=""><u>SIGN UP</u></a>
 	<!--a class="signup-forget right-align" href="#"><u>FORGET?</u></a-->
 	</p>
 	</div>
@@ -102,6 +103,7 @@
 	notify_mark_all_unread_url='/inbox/notifications/mark-all-as-read/';
 	notify_refresh_period=15000;
 	register_notifier(fill_notification_list);register_notifier(fill_notification_badge);
+
 	</script>
 </body>
 </html>

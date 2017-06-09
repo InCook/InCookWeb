@@ -259,18 +259,17 @@ def add_bookmark (request):
 @login_required(login_url='/login', redirect_field_name='')
 def search (request):
     # Get ingredients
-    ingre_list = request.GET['ingredients']
-    if request.GET['noingredients'] != "\"\"":
-        noingre_list = request.GET['noingredients']
-    else:
-        noingre_list = None
-    if ingre_list == "":
+    ingre_list = request.GET.get('ingredients', None)
+    noingre_list = request.GET.get('noingredients', None)
+
+    if ingre_list == None:
         response = json.dumps({'success': False, 'detail': "No matching ingredients.", 'output': None})
         return HttpResponse(response, "application/json")
     ingre_list = ingre_list.replace("\"", "")
     ingre_list = ingre_list.split(",")
 
     print(noingre_list)
+    print(ingre_list)
 
     if noingre_list != None:
         noingre_list = noingre_list.replace("\"", "")

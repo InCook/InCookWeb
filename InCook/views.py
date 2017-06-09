@@ -15,12 +15,13 @@ def main (request):
     ingre_json = {}
 
     for i in ingre:
-        if i.category in category:
+        if i.category in category and i.category is not None and i.category is not "":
             ingre_list[category.index(i.category)].append(i.name)
 
     cnt = 0
     for i in category:
         ingre_json[i] = ingre_list[cnt]
+        print(ingre_list[cnt])
         cnt = cnt + 1
 
     return render(request, 'main.html', {'ingredient_list' : json.dumps(ingre_json)})

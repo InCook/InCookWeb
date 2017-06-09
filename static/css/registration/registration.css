@@ -1,64 +1,50 @@
 .registration-background {
-	background: #ffffff;
-	position:relative;
+background: #52b7b1;
+background: -ms-linear-gradient(left,  #48dbb8,  #52b7b1);
+background: -webkit-linear-gradient(left,  #48dbb8,  #52b7b1);
+background: -o-linear-gradient(right,  #48dbb8,  #52b7b1);
+background: -moz-linear-gradient(right,  #48dbb8,  #52b7b1);
+background: linear-gradient(to right,  #48dbb8,  #52b7b1);
 }
 
 #registration {
-	width: 100%;
-	height: 100em;
-	position: absolute;
-	top: 50%
+width: 100%;
+height: 100vh;
 }
 
 .sheet {
-	background: #48dbb8;
-	background: -webkit-linear-gradient(#48dbb8, #ffffff); /* For Safari 5.1 to 6.0 */
-	background: -o-linear-gradient(#48dbb8, #ffffff); /* For Opera 11.1 to 12.0 */
-	background: -moz-linear-gradient(#48dbb8, #ffffff); /* For Firefox 3.6 to 15 */
-	background: linear-gradient(#48dbb8, #ffffff); /* Standard syntax */
+	background-color: #FFF;
+	-webkit-box-shadow: 0 2px 4px 1px rgba(0,0,0,.2);
+	-moz-box-shadow: 0 2px 4px 1px rgba(0,0,0,.2);
+	box-shadow: 0 2px 4px 1px rgba(0,0,0,.2);
+	border-radius: 5px;
 	text-align: center;
-	padding: 1em;
-	width: 80%;
-	max-width: 500px;
-	margin-left: auto;
-	margin-right: auto;
-	height: 50%;
+padding: 1em;
+width: 80%;
+	   max-width: 500px;
+	   margin-left: auto;
+	   margin-right: auto;
 }
-.input-field {
-	color:#ffffff;
-	border-bottom-color: #ffffff;
+
+#logo p {
+	font-family: Lobster;
+	font-size:8em;
+	text-align:center;
+	margin-bottom: 10px;
+	margin-top:-10px;
 }
-.input-field label {
-	color:#ffffff;
-	left:2em;
-}
-#id_username {
-	border-bottom: 1px solid #ffffff;
-	box-shadow: 0 1px 0 0 #ffffff;
-	width: 90%;
-}
-#id_password {
-	border-bottom: 1px solid #ffffff;
-	box-shadow: 0 1px 0 0 #ffffff;
-	width: 90%;
-}
-img {
-	width: 100px;
-	height: 100px;
-	margin-top: -20em;
-	margin-bottom: 5em;
-}
+
 .explanation {
 	font-family: 'Josefin Slab', serif;
 	font-size: 1.1em;
-	color: gray;
-	line-height: 1em;
-	margin-bottom: 2em;
+color: gray;
+	   line-height: 1em;
+	   margin-bottom: 2em;
 }
 
 .error {
 	font-size: 0.9em;
-	color: #EE6E73;
+color: #EE6E73;
 }
 
 .error-login {
@@ -72,9 +58,9 @@ img {
 .btn-large,
 	.btn-large:link,
 	.btn-large:visited {
-		width: 40%;
-		height: 100%;
-		background-color: #5c6865;
+width: 100%;
+height: 100%;
+		background-color: #528FA8;
 		border-radius: 50px;
 	}
 
@@ -85,13 +71,13 @@ img {
 
 a.signup-forget {
 	font-size: 1em;
-	color: gray;
+color: gray;
 }
 
 a.signup-forget:active,
 	a.signup-forget:hover {
 		text-decoration: underline;
-		color: black;
+color: black;
 	}
 
 .right-align {
@@ -108,3 +94,4 @@ h5 {
 	margin-top: 1em;
 	margin-bottom: 0.5em;
 }
+
