@@ -16,4 +16,8 @@ body {
 .modal {
     width: 70%;
     max-width: 850px;
+    z-index: 999999 !important;
+}
+.modal-overlay {
+    z-index: 999 !important;
 }

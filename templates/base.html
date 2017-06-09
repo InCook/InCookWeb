@@ -27,6 +27,8 @@
     <link href="{% static 'recipe/css/recipe_list.css' %}" rel="stylesheet">
     <link href="{% static 'recipe/css/detail.css' %}" rel="stylesheet">
     <link href="{% static 'recipe/css/add.css' %}" rel="stylesheet">
+    <link href="{% static 'recipe/css/refrigerator.css' %}" rel="stylesheet">
+    <link href="{% static 'recipe/css/folder.css' %}" rel="stylesheet">
 
     <title>{{ title }}</title>
   </head>
@@ -35,7 +37,32 @@
     <div id="pt-main">
 
       <div class="pt-page pt-page-1">
-        <div id="hello" style="background-color:black;height:100vh;width:100vw;"></div>
+
+        <!-- Ingredients -->
+        <div id="refrigerator">
+          <div class="cover">
+            <div class="left_gate"></div>
+            <div class="right_gate"></div>
+            <div id="refri-inside">
+
+              <div class="row">
+                {% for category in ingredients %}
+                {% if category != None and cateogory != '' %}
+                <div class="refri-category col s3">
+                  <a href="#{{ category }}-modal">
+                    {% with 'image/'|add:category|add:'.png' as ingre_src %}
+                    <img src="{% static ingre_src %}">
+                    {% endwith %}
+                    <p>{{ category }}</p>
+                  </a>
+                </div>
+                {% endif %}
+                {% endfor %}
+              </div>              
+
+            </div>
+          </div>
+        </div>
 
         <!-- Side Nav for Transition -->
         <div id="sidenav" class="valign-wrapper right-align">
@@ -46,7 +73,7 @@
             </p>
             <a id="swap-btn" class="btn-floating btn-large waves-effect waves-light z-depth-0"><i class="material-icons">swap_horiz</i></a>
             <p class="sidenav-text">with
-            <br><span id="sidenav-recipes">0</span>
+            <br><span id="sidenav-ingres">0</span>
             <br><span>INGREDIENTS</span>
             </p>
           </div>
@@ -175,6 +202,29 @@
       </div>
     </div>
 
+
+    <!-- Ingredients -->
+    {% for category, ingres in ingredients.items %}
+    <div id="{{ category }}-modal" class="modal modal-fixed-footer">
+      <div class="modal-content">
+        <h4 id="detail-name">{{ category }}</h4>
+        {% for ingre in ingres %}
+          {% for id, name in ingre.items %}
+            <p class="ingre-list">
+              <input type="checkbox" id="like-ingre-{{ id }}" class="like-ingre" value="{{ name }}"/>
+              <label for="like-ingre-{{ id }}"></label>
+              <input type="checkbox" id="hate-ingre-{{ id }}" class="hate-ingre" value="{{ name }}"/>
+              <label for="hate-ingre-{{ id }}">{{ name }}</label>
+            </p>
+          {% endfor %}
+        {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+      </div>
+    </div>
+    {% endfor %}
+
     <!-- jQuery -->
     <script
       src="https://code.jquery.com/jquery-3.2.1.min.js"
@@ -198,6 +248,8 @@
     <script src="{% static 'recipe/js/recipe_list.js' %}"></script>
     <script src="{% static 'recipe/js/detail.js' %}"></script>
     <script src="{% static 'recipe/js/add.js' %}"></script>
+    <script src="{% static 'recipe/js/folder.js' %}"></script>
+    <script src="{% static 'recipe/js/refrigerator.js' %}"></script>
 
   </body>
 </html>

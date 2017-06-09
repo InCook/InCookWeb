@@ -88,6 +88,7 @@ var PageTransitions = (function() {
 				// move to left from right
 				outClass = 'pt-page-moveToLeft';
 				inClass = 'pt-page-moveFromRight';
+				$('.pt-page-2').show();
 				break;
 			case 2:
 				// move to right from left
@@ -95,56 +96,35 @@ var PageTransitions = (function() {
 				inClass = 'pt-page-moveFromLeft';
 				break;
 		}
+			
+		$currPage.addClass( outClass ).on( animEndEventName, function() {
+			if (animation == 1) {
+				$('#refrigerator').hide();
+				
+				$('#sidenav').removeClass('right-align').addClass('left-align');
+			}
+			else
+				$('#sidenav').addClass('right-align').removeClass('left-align');
 
-		if (animation == 1) {
-			$currPage.addClass( outClass ).on( animEndEventName, function() {
-				if (animation == 1) {
-					$('#hello').hide();
-					$('#add').show();
-					$('#sidenav').removeClass('right-align').addClass('left-align');
-				}
+			$currPage.off( animEndEventName );
+			endCurrPage = true;
+			if( endNextPage ) {
+				onEndAnimation( $currPage, $nextPage );
+			}
+		} );
 
-				$currPage.off( animEndEventName );
-				endCurrPage = true;
-				if( endNextPage ) {
-					onEndAnimation( $currPage, $nextPage );
-				}
-			} );
-
-			$nextPage.addClass( inClass ).on( animEndEventName, function() {
-				$nextPage.off( animEndEventName );
-				endNextPage = true;
-				if( endCurrPage ) {
-					onEndAnimation( $currPage, $nextPage );
-				}
-			} );
-		}
-
-		else if (animation == 2) {
-			$currPage.addClass( outClass ).on( animEndEventName, function() {
-				if (animation == 2) {
-					$('#sidenav').addClass('right-align').removeClass('left-align');
-					$('#hello').show();
-					$('#add').hide();
-				}
-
-				$currPage.off( animEndEventName );
-				endCurrPage = true;
-				if( endNextPage ) {
-					onEndAnimation( $currPage, $nextPage );
-				}
-			} );
-
-			$nextPage.addClass( inClass ).on( animEndEventName, function() {
-				$nextPage.off( animEndEventName );
-				endNextPage = true;
-				if( endCurrPage ) {
-					onEndAnimation( $currPage, $nextPage );
-				}
-			} );
-
-
-		}
+		$nextPage.addClass( inClass ).on( animEndEventName, function() {
+			if (animation == 2) {
+				
+				$('#refrigerator').show();
+				$('.pt-page-2').hide();
+			}
+			$nextPage.off( animEndEventName );
+			endNextPage = true;
+			if( endCurrPage ) {
+				onEndAnimation( $currPage, $nextPage );
+			}
+		} );
 
 		if( !support ) {
 			onEndAnimation( $currPage, $nextPage );
