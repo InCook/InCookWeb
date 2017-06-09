@@ -47,8 +47,8 @@
 
               <div class="row">
                 {% for category in ingredients %}
-                {% if category != None and cateogory != '' %}
-                <div class="refri-category col s3">
+                {% if category != None and category != '' %}
+                <div class="refri-category col s3 center-align">
                   <a href="#{{ category }}-modal">
                     {% with 'image/'|add:category|add:'.png' as ingre_src %}
                     <img src="{% static ingre_src %}">
@@ -153,8 +153,8 @@
           <p class="add-subtitle">Search the ingredients it needs.</p>
           <div class="row">
             <div class="col s12">
-              <div id="add-ingredients" class="input-field ui-widget">
-                <input id="input-ingredients" type="search" name="ingredients" class="ui-autocomplete-input" autocomplete="off">
+              <div id="add-ingredients" class="input-field ui-widget ui-front">
+                <input id="input-ingredients" type="search" name="ingredients" autocomplete="off" />
                 <label for="input-ingredients"><i class="material-icons">search</i></label>
                 <i class="material-icons close">close</i>
               </div>
