@@ -276,14 +276,6 @@ def search (request):
         noingre_list = noingre_list.replace("\"", "")
         noingre_list = noingre_list.split(",")
 
-    print(noingre_list)
-    # Get username
-    if request.GET['username'] != "":
-        username = request.GET['username']
-        username = username.replace("\"", "")
-    else:
-        username = None
-
     # Make query list in order to operate or opearation with respect to ingredients
     query_list = []
     for i in ingre_list:
@@ -309,26 +301,19 @@ def search (request):
         like = False
 
         # Check Account existence
-        if username != "" and User.objects.filter(username=username).exists():
-            user = User.objects.get(username = username)
+        if Account.objects.filter(user=request.user).exists():
 
-            if Account.objects.filter(user=user).exists():
-
-                # bookmark or not
-                if Account.objects.filter(user__in=[user], bookmarks__in=[i]).exists():
-                    bookmark = True
-                else:
-                    bookmark = False
-
-                # like or not
-                if Account.objects.filter(user__in=[user], likes__in=[i]).exists():
-                    like = True
-                else:
-                    like = False
+            # bookmark or not
+            if Account.objects.filter(user__in=[request.user], bookmarks__in=[i]).exists():
+                bookmark = True
             else:
                 bookmark = False
-                like = False
 
+            # like or not
+            if Account.objects.filter(user__in=[request.user], likes__in=[i]).exists():
+                like = True
+            else:
+                like = False
         else:
             bookmark = False
             like = False
@@ -388,3 +373,4 @@ def get_ingredients (request):
     else:
         data = 'fail'
     return HttpResponse(data, "application/json")
+
