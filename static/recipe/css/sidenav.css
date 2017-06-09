@@ -1,0 +1,40 @@
+/* Side Nav for Transition */
+#sidenav {
+    height: 100%;
+    width: 150px;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    background-color: #37474f;
+    overflow-x: hidden;
+    transition: 0.5s;
+    text-align: center;
+}
+#sidenav > div {
+    margin: auto;
+}
+.sidenav-text {
+    color: #fff;
+    font-family: 'Josefin Slab', serif;
+    font-size: 20px;
+    font-weight: 100;
+    letter-spacing: 0.5px;
+}
+.sidenav-text > span {
+    font-weight: bold;
+}
+#sidenav-ingres,
+#sidenav-recipes {
+    font-size: 48px;
+    line-height: 48px;
+}
+#swap-btn {
+    background: transparent;
+    margin: 50px 0;
+}
+.right-align {
+    right: 0;
+}
+.left-align {
+    left: 0;
+}
