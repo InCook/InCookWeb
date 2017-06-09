@@ -22,13 +22,22 @@ $('input[type="checkbox"]').click(function() {
         hate_ingres += string;
     });
 
+    $('#preloader').show();
     $.get('/search', {'ingredients': like_ingres, 'noingredients': hate_ingres}, function(data) {
-        if (data['success']) {
-            var recipe_cnt = data['output'].length;
-            $('#sidenav-recipes').html(recipe_cnt);
-        }
+        $('#preloader').hide();
+        $('#recipes').html(data);
+        $('.grid').masonry({
+            itemSelector: '.grid-item',
+            columnWidth: 300,
+            gutter: 20,
+            fitWidth: true
+        });
+        $('.modal').modal();
+
+        var recipe_cnt = $(".grid").data('cnt');
+        $('#sidenav-recipes').html(recipe_cnt);
     });
 
-    var like_cnt = $('input[type=checkbox].like-ingre:checked').length;
-    $('#sidenav-ingres').html(like_cnt);
+    var like_ingre_cnt = $('input[type=checkbox].like-ingre:checked').length;
+    $('#sidenav-ingres').html(like_ingre_cnt);
 });

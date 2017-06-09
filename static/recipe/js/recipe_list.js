@@ -1,9 +1,9 @@
-// Masonry layout
+// grid
 $('.grid').masonry({
-  itemSelector: '.grid-item',
-  columnWidth: 300,
-  gutter: 20,
-  fitWidth: true
+    itemSelector: '.grid-item',
+    columnWidth: 300,
+    gutter: 20,
+    fitWidth: true
 });
 
 // replaceAll

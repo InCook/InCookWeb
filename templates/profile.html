@@ -7,6 +7,7 @@
 <!--Import materialize.css-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.4/css/materialize.min.css">
   <link rel="stylesheet" herf="{% static 'css/profile.css' %}">
+  <link rel="stylesheet" herf="{% static 'css/detail.css' %}">
 <!-- Font -->
 <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Josefin+Slab:300italic' rel='stylesheet' type='text/css'>
@@ -98,12 +99,35 @@ a:hover {
             {% endfor %}
           </div>
         </div>
-	</ul>
+
+	    <!-- Detail -->
+    <div id="detail-modal" class="modal modal-fixed-footer">
+      <div class="modal-content">
+        <h4 id="detail-name">Modal Header</h4>
+        <p id="detail-author">A bunch of text</p>
+        <img id="detail-thumbnail" src="">
+        <div id="detail-ingredients">
+          <p class="modal-subtitle"><span>Ingredients</span></p>
+          <p class="modal-subcontent"></p>
+        </div>
+        <div id="detail-direction">
+          <p class="modal-subtitle"><span>Direction</span></p>
+          <p class="modal-subcontent"></p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a id="like-" class="modal-action btn-flat like"><i class="material-icons">favorite</i>2</a>
+        <a id="rating-" class="modal-action btn-flat rating"><i class="material-icons">grade</i>4.0</a>
+        <a id="bookmark-" class="modal-action btn-flat bookmark"><i class="material-icons">bookmark</i>SAVE</a>
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+      </div>
+    </div>
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.4/js/materialize.min.js"></script>
     <!-- Masonry -->
     <script src="{% static 'masonry/masonry.pkgd.min.js' %}"></script>
     <script src="{% static 'recipe/js/recipe_list.js' %}"></script>
+    <script src="{% static 'recipe/js/detail.js' %}"></script>
     <script>
         $("#top").css("background-color", "#48dbb8");
     </script>

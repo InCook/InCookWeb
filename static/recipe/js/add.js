@@ -4,35 +4,30 @@ $('#add-ingredients > i.close').click(function() {
 })
 
 /* Ingredient - autocomplete */
-$( function() {
+$( ".selector" ).autocomplete({
+  appendTo: "#input-ingredients"
+});
+$(function() {
   function split( val ) {
     return val.split( /,\s*/ );
   }
   function extractLast( term ) {
     return split( term ).pop();
   }
-
-  $( "#input-ingredients" )
+  $("#input-ingredients")
     // don't navigate away from the field on tab when selecting an item
-    .on( "keydown", function( event ) {
-      if ( event.keyCode === $.ui.keyCode.TAB &&
-          $( this ).autocomplete( "instance" ).menu.active ) {
+    .bind( "keydown", function( event ) {
+      if ( event.keyCode === $.ui.keyCode.TAB && $( this ).autocomplete( "instance" ).menu.active ) {
         event.preventDefault();
       }
-    })
+    })  
     .autocomplete({
       source: function( request, response ) {
-        $.getJSON( "/get-ingredients", {
+        $.getJSON( "/tag/get_tags", {
           term: extractLast( request.term )
         }, response );
       },
-      search: function() {
-        // custom minLength
-        var term = extractLast( this.value );
-        if ( term.length < 2 ) {
-          return false;
-        }
-      },
+      minLength: 1,
       focus: function() {
         // prevent value inserted on focus
         return false;
@@ -49,4 +44,15 @@ $( function() {
         return false;
       }
     });
-} );
+});
+$(document).ready(function() {
+  $('#add-modal').modal({
+    ready: function () {
+      $('#input-ingredients').autocomplete('option', 'appendTo', '#input-ingredients');
+    }
+  })
+});
+
+$('button[type="submit"]').click(function() {
+  $.post
+})
