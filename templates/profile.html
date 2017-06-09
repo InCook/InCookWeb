@@ -12,6 +12,7 @@
 <link href='https://fonts.googleapis.com/css?family=Josefin+Slab:300italic' rel='stylesheet' type='text/css'>
 <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Dosis:400,700' rel='stylesheet' type='text/css'>
+    <link href="{% static 'recipe/css/recipe_list.css' %}" rel="stylesheet">
 
 <!--Let browser know website is optimized for mobile-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -21,17 +22,91 @@
 
 <!-- Favicon -->
 <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+    <style>
+a:hover {
+  cursor: pointer;
+}
+</style>
   <title>{{title}}</title>
 </head>
 <body>
-	<a href="{% url 'test' %}">InCook</a>
-	<p>{{username}}</p>
-	<ul>
-	{% for recipe in like|safeseq %}
-	<li>{{ recipe }}</li>
-{% endfor %}
+    <div >
+    <nav id="top">
+        <ul>
+            <li><a href="{% url 'main' %}">InCook</a></li>
+            <li><a href="{% url 'profile' %}">{{username}} Profile</a></li>
+            <li><a href=""> Received likes : {{like_num}}</a></li>
+            <li><a href=""> Overall rating : 7.0</a></li>
+        </ul>
+    </nav>
+    </div>
+    <div id="recipes">
+        <section class="hero is-left is-medium is-primary is-bold">
+    <div class="hero-header">
+      <header class="header">
+        <div class="container">
+
+        </div>
+      </header>
+    </div>
+    <!-- Main Hero -->
+    <div id="#home" class="hero-content">
+      <div class="container">
+        <h1 class="title is-1">
+          Saved Recipes<span class="title is-1 blinking-cursor">|</span>
+      </h1>
+
+
+      </div>
+    </div>
+  </section>
+          <div class="grid">
+            {% for recipe in recipes %}
+            <div class="card grid-item">
+              <div id="{{ recipe.id }}" class="card-image">
+                <div class="card-image-hover card-image-hover-none">
+                  <div class="valign-wrapper">
+                    <a class="center-align" href="#detail-modal">More detail</a>
+                  </div>
+                </div>
+                {% with 'recipe/img/'|add:recipe.thumbnail as thumbnail_src %}
+                <img src="{% static thumbnail_src %}">
+                {% endwith %}
+              </div>
+              <div class="card-content">
+                <h4 class="card-title">{{ recipe.name }}</h4>
+                <p class="card-author">{{ recipe.author }}</p>
+              </div>
+              <div class="card-action">
+
+                {% if recipe in account.likes.all %}
+                <a id="like-{{ recipe.id }}" class="like like-red"><i class="material-icons">favorite</i>{{ recipe.no_likes }}</a>
+                {% else %}
+                <a id="like-{{ recipe.id }}" class="like"><i class="material-icons">favorite_border</i>{{ recipe.no_likes }}</a>
+                {% endif %}
+
+                <a id="rating-{{ recipe.id }}" class="rating rating-yellow"><i class="material-icons">grade</i>{{ recipe.score }}</a>
+
+                {% if recipe in account.bookmarks.all %}
+                <a id="bookmark-{{ recipe.id }}" class="bookmark bookmark-blue"><i class="material-icons">bookmark</i>SAVE</a>
+                {% else %}
+                <a id="bookmark-{{ recipe.id }}" class="bookmark"><i class="material-icons">bookmark_border</i>SAVE</a>
+                {% endif %}
+
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
 	</ul>
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.4/js/materialize.min.js"></script>
+    <!-- Masonry -->
+    <script src="{% static 'masonry/masonry.pkgd.min.js' %}"></script>
+    <script src="{% static 'recipe/js/recipe_list.js' %}"></script>
+    <script>
+        $("#top").css("background-color", "#48dbb8");
+    </script>
+
 </body>
 </html>
