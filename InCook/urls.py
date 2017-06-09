@@ -10,7 +10,7 @@ urlpatterns = [
     # url(r'^$', 'InCook.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    #url(r'^$', incook_views.main,  name=''),
+    #url(r'^$', incook_views.test,  name=''),
     url(r'^main$', recipe_views.test, name='main'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^login/', auth_views.login, {'template_name': 'registration/login.html'}, name='login'),
@@ -22,5 +22,5 @@ urlpatterns = [
     url(r'^rating/$', recipe_views.add_rating,  name='add_rating'),
     url(r'^search/$', recipe_views.search,  name='search'),
     url(r'^get-ingredients/$', recipe_views.get_ingredients,  name='get_ingredients'),
-    url(r'^test/$', recipe_views.test,  name='test'),
+    url(r'^$', recipe_views.test,  name='test'),
 ]

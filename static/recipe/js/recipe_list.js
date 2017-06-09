@@ -1,3 +1,11 @@
+// grid
+$('.grid').masonry({
+    itemSelector: '.grid-item',
+    columnWidth: 300,
+    gutter: 20,
+    fitWidth: true
+});
+
 // replaceAll
 String.prototype.replaceAll = function(org, dest) {
     return this.split(org).join(dest);

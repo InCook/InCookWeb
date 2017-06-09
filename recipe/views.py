@@ -265,10 +265,12 @@ def search (request):
     if ingre_list == None or ingre_list == '':
         response = json.dumps({'success': False, 'detail': "No matching ingredients.", 'output': None})
         return HttpResponse(response, "application/json")
-    ingre_list_split = ingre_list.split(",")
+    ingre_list = ingre_list.split(",")
+    ingre_list.remove('')
 
     if noingre_list != None and noingre_list != '':
-        noingre_list_split = noingre_list.split(",")
+        noingre_list = noingre_list.split(",")
+        noingre_list.remove('')
 
     # Make query list in order to operate or opearation with respect to ingredients
     query_list = []
